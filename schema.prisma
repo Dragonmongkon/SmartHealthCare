@@ -1,0 +1,70 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  OFFICER
+  PATIENT
+}
+
+model User {
+  id             String   @id @default(uuid())
+  username       String   @unique
+  password       String   // ต้อง Hashed ด้วย bcrypt
+  role           Role
+  
+  // ข้อมูลทั่วไป
+  firstName      String
+  lastName       String
+  dob            DateTime
+  age            Int
+  gender         String?
+  
+  // Identifier เฉพาะกลุ่ม
+  nationalId     String?  @unique // รหัส ปชช. 13 หลัก (เฉพาะ Patient)
+  officerId      String?  @unique // รหัสเจ้าหน้าที่ (เฉพาะ Officer/Admin)
+  barcode        String?  @unique // รหัสสแกนเข้าตู้ (เฉพาะ Patient)
+  
+  // ข้อมูลสุขภาพพื้นฐาน
+  disease        String?
+  allergy        String?
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  healthRecords  HealthRecord[]
+  screeningQueue ScreeningQueue[]
+}
+
+model HealthRecord {
+  id          String   @id @default(uuid())
+  patientId   String
+  patient     User     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  
+  temp        Float?
+  weight      Float?
+  height      Float?
+  sys         Int?
+  dia         Int?
+  bpm         Int?
+  
+  recordedAt  DateTime @default(now())
+}
+
+// ตารางคิวสำหรับจัดการสิทธิ์ Bypass Barcode 1 รอบ
+model ScreeningQueue {
+  id            String   @id @default(uuid())
+  patientId     String
+  patient       User     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  
+  bypassBarcode Boolean  @default(false)
+  isCompleted   Boolean  @default(false)
+  
+  createdAt     DateTime @default(now())
+}

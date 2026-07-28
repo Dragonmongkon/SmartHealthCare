@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart HealthCare Station</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 🔑 หน้าต่าง Login -->
+    <div id="login-page" class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fa-solid fa-notes-medical"></i>
+                <h2>Smart HealthCare</h2>
+                <p>เข้าสู่ระบบ (ผู้ป่วย / เจ้าหน้าที่ / Admin)</p>
+            </div>
+            <div class="input-field">
+                <label>Username / Barcode</label>
+                <input type="text" id="login-username" placeholder="Enter username...">
+            </div>
+            <div class="input-field">
+                <label>Password</label>
+                <input type="password" id="login-password" placeholder="Enter password...">
+            </div>
+            <button id="btn-login" class="save-btn" style="width: 100%; justify-content: center; margin-top: 1rem;">
+                <i class="fa-solid fa-right-to-bracket"></i> Sign In
+            </button>
+            <p class="switch-text">ผู้ป่วยที่ยังไม่มีบัญชี? <span class="link-text" id="link-to-signup">สมัครสมาชิกด้วยตนเอง</span></p>
+        </div>
+    </div>
+
+    <!-- 📝 หน้าต่าง สมัครสมาชิกผู้ป่วย (ด้วยตนเอง) -->
+    <div id="signup-page" class="signup-fullpage" style="display: none;">
+        <div class="signup-visual">
+            <div class="signup-visual-inner">
+                <i class="fa-solid fa-heart-pulse brand-icon"></i>
+                <h1>Smart HealthCare Station</h1>
+                <p>สมัครสมาชิกเพื่อรับ Barcode ประจำตัว สำหรับสแกนเข้าใช้งานสถานีตรวจสุขภาพ</p>
+            </div>
+        </div>
+        <div class="signup-form-panel">
+            <div class="signup-form-scroll">
+                <div class="signup-form-header">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <h2>สมัครสมาชิกผู้ป่วย</h2>
+                </div>
+                <form id="signup-form">
+                    <div class="form-row">
+                        <div class="input-field">
+                            <label>ชื่อจริง</label>
+                            <input type="text" id="signup-firstname" required>
+                        </div>
+                        <div class="input-field">
+                            <label>นามสกุล</label>
+                            <input type="text" id="signup-lastname" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-field">
+                            <label>เลขบัตรประชาชน 13 หลัก</label>
+                            <input type="text" id="signup-nationalId" maxlength="13" required>
+                        </div>
+                        <div class="input-field">
+                            <label>วัน/เดือน/ปีเกิด</label>
+                            <input type="date" id="signup-dob" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-field">
+                            <label>เพศ</label>
+                            <select id="signup-gender" required>
+                                <option value="" disabled selected>เลือกเพศ</option>
+                                <option value="ชาย">ชาย</option>
+                                <option value="หญิง">หญิง</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-field">
+                            <label>โรคประจำตัว</label>
+                            <select id="signup-disease" required>
+                                <option value="ไม่มี">ไม่มีโรคประจำตัว</option>
+                                <option value="ความดันโลหิตสูง">ความดันโลหิตสูง</option>
+                                <option value="เบาหวาน">เบาหวาน</option>
+                                <option value="โรคหัวใจ">โรคหัวใจ</option>
+                                <option value="หอบหืด/ภูมิแพ้">หอบหืด/ภูมิแพ้</option>
+                                <option value="โรคไต">โรคไต</option>
+                                <option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>
+                            </select>
+                            <!-- ซ่อนช่องกรอกนี้ไว้ จะโชว์เมื่อเลือก "อื่นๆ" -->
+                            <input type="text" id="signup-disease-other" placeholder="โปรดระบุโรคประจำตัว..." style="display: none; margin-top: 0.5rem;">
+                        </div>
+                        <div class="input-field">
+                            <label>ยาที่แพ้</label>
+                            <select id="signup-allergy" required>
+                                <option value="ไม่มี">ไม่มีประวัติแพ้ยา</option>
+                                <option value="กลุ่มยา Penicillin">กลุ่มยา Penicillin (เช่น Amoxicillin)</option>
+                                <option value="กลุ่มยา Sulfa">กลุ่มยา Sulfa</option>
+                                <option value="กลุ่มยา NSAIDs">กลุ่มยา NSAIDs (เช่น Ibuprofen)</option>
+                                <option value="ยา Aspirin">ยา Aspirin</option>
+                                <option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>
+                            </select>
+                            <!-- ซ่อนช่องกรอกนี้ไว้ จะโชว์เมื่อเลือก "อื่นๆ" -->
+                            <input type="text" id="signup-allergy-other" placeholder="โปรดระบุยาที่แพ้..." style="display: none; margin-top: 0.5rem;">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-field">
+                            <label>Username</label>
+                            <input type="text" id="signup-username" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Password</label>
+                            <input type="password" id="signup-password" required>
+                        </div>
+                    </div>
+                    <button type="submit" id="btn-signup" class="save-btn" style="width: 100%; justify-content: center; margin-top: 1rem;">สมัครสมาชิก</button>
+                </form>
+                <p class="switch-text">กลับไปหน้า <span class="link-text" id="link-to-login">เข้าสู่ระบบ</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🏥 ระบบหลัก (App Container) -->
+    <div id="app-container" class="dashboard" style="display: none;">
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-notes-medical"></i>
+                <span>Smart HealthCare</span>
+            </div>
+            <nav class="main-nav">
+                <!-- 🔴 เพิ่มปุ่มนี้เข้าไป (ระบบจะซ่อนไว้ก่อน และโชว์เฉพาะคนไข้) -->
+                <button class="nav-btn" id="btn-my-health" style="display:none;"><i class="fa-solid fa-heart-pulse"></i> ข้อมูลสุขภาพ</button>
+                
+                <!-- เมนูเดิมจะอยู่ด้านล่างนี้ -->
+                <button class="nav-btn" id="btn-live"><i class="fa-solid fa-tower-broadcast"></i> Live Dashboard</button>
+                <button class="nav-btn" id="btn-history"><i class="fa-solid fa-clock-rotate-left"></i> History Records</button>
+                <button class="nav-btn" id="btn-patients"><i class="fa-solid fa-users"></i> Patients</button>
+                <button class="nav-btn" id="btn-station"><i class="fa-solid fa-server"></i> IoT Station</button>
+                <button class="nav-btn" id="btn-admin" style="display:none;"><i class="fa-solid fa-user-shield"></i> Admin Panel</button>
+            </nav>
+            <div class="user-profile">
+                <div class="user-info">
+                    <span class="user-role" id="display-role">Role</span>
+                    <span class="user-name" id="display-name">Name</span>
+                </div>
+                <button id="btn-logout" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </header>
+
+        <!-- 📡 1. Live Dashboard Section (มี 2 โหมด) -->
+        <main id="live-section" style="display: none;">
+            <!-- ส่วนลงทะเบียนให้ผู้ป่วยโดยเจ้าหน้าที่ (Bypass Barcode) -->
+            <div class="patient-registration card" style="margin-bottom: 1rem; border-left: 4px solid var(--primary);">
+                <div class="registration-header">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <h2>สมัคสมาชิกให้ผู้ป่วย (Bypass Barcode เข้าตู้ได้ทันที 1 รอบ)</h2>
+                </div>
+                <form id="officer-register-form">
+                    <div class="grid grid-3">
+                        <div class="input-field"><input type="text" id="off-fname" placeholder="ชื่อ" required></div>
+                        <div class="input-field"><input type="text" id="off-lname" placeholder="นามสกุล" required></div>
+                        <div class="input-field"><input type="text" id="off-nid" placeholder="เลขบัตร ปชช 13 หลัก" maxlength="13" required></div>
+                        <div class="input-field"><input type="date" id="off-dob" required></div>
+                        <div class="input-field">
+                            <label>เพศ</label>
+                            <select id="off-gender" required>
+                                <option value="" disabled selected>เลือกเพศ</option>
+                                <option value="ชาย">ชาย</option>
+                                <option value="หญิง">หญิง</option>
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label>โรคประจำตัว</label>
+                            <select id="off-disease" required>
+                                <option value="ไม่มี">ไม่มี</option>
+                                <option value="ความดันโลหิตสูง">ความดันโลหิตสูง</option>
+                                <option value="เบาหวาน">เบาหวาน</option>
+                                <option value="โรคหัวใจ">โรคหัวใจ</option>
+                                <option value="หอบหืด/ภูมิแพ้">หอบหืด/ภูมิแพ้</option>
+                                <option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>
+                            </select>
+                            <input type="text" id="off-disease-other" placeholder="โปรดระบุโรค..." style="display: none; margin-top: 0.5rem;">
+                        </div>
+                        <div class="input-field">
+                            <label>ยาที่แพ้</label>
+                            <select id="off-allergy" required>
+                                <option value="ไม่มี">ไม่มี</option>
+                                <option value="กลุ่มยา Penicillin">กลุ่มยา Penicillin</option>
+                                <option value="กลุ่มยา Sulfa">กลุ่มยา Sulfa</option>
+                                <option value="กลุ่มยา NSAIDs">กลุ่มยา NSAIDs</option>
+                                <option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>
+                            </select>
+                            <input type="text" id="off-allergy-other" placeholder="โปรดระบุยาที่แพ้..." style="display: none; margin-top: 0.5rem;">
+                        </div>
+                        <div class="input-field"><input type="text" id="off-username" placeholder="Username" required></div>
+                        <div class="input-field"><input type="password" id="off-password" placeholder="Password" required></div>
+                    </div>
+                    <button type="submit" class="save-btn" style="margin-top: 1rem;"><i class="fa-solid fa-check"></i> สมัครให้ผู้ป่วยและเตรียมคิว</button>
+                </form>
+            </div>
+
+            <!-- กล่องควบคุมโหมด Live Dashboard -->
+            <div class="card" style="margin-bottom: 1rem;">
+                <div class="history-header">
+                    <h2><i class="fa-solid fa-sliders"></i> โหมดการบันทึกผลตรวจ</h2>
+                    <div class="mode-switch">
+                        <label><input type="radio" name="input_mode" value="1" checked> โหมด 1: รับค่าจากอุปกรณ์ IoT (ESP32 / Bluetooth)</label>
+                        <label style="margin-left: 1rem;"><input type="radio" name="input_mode" value="2"> โหมด 2: กรอกข้อมูลเอง (Manual)</label>
+                    </div>
+                </div>
+                <div class="input-field" style="margin-top:1rem;">
+                    <label>ID ผู้ป่วยที่กำลังรับการตรวจ (รอรับจากสแกนบาร์โค้ด หรือ Bypass)</label>
+                    <div class="queue-row">
+                        <!-- 🔴 ปลดล็อก readonly และเพิ่ม Placeholder ให้รู้ว่าสแกนได้ -->
+                        <input type="text" id="active-patient-id" placeholder="สแกน Barcode หรือ พิมพ์แล้วกด Enter..." style="background: #ffffff; font-weight: bold; padding: 0.85rem 1.2rem; border: 1px solid var(--border); border-radius: 10px; outline: none; transition: 0.3s;">
+                        <button id="btn-cancel-queue" class="save-btn" style="background: #ef4444; display: none;"><i class="fa-solid fa-xmark"></i> ยกเลิกคิว</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- การ์ดแสดงผล/กรอกค่า (ตัด BMI ออกตามคำสั่ง) -->
+            <div class="grid" id="sensor-cards">
+                <div class="card health-card">
+                    <div class="card-header"><span class="card-label">Body Temp</span></div>
+                    <div class="card-value"><input type="number" id="val-temp" class="manual-input" disabled value="0"><span class="card-unit">°C</span></div>
+                </div>
+                <div class="card health-card">
+                    <div class="card-header"><span class="card-label">Weight</span></div>
+                    <div class="card-value"><input type="number" id="val-weight" class="manual-input" disabled value="0"><span class="card-unit">kg</span></div>
+                </div>
+                <div class="card health-card">
+                    <div class="card-header"><span class="card-label">Height</span></div>
+                    <div class="card-value"><input type="number" id="val-height" class="manual-input" disabled value="0"><span class="card-unit">cm</span></div>
+                </div>
+                <div class="card health-card">
+                    <div class="card-header"><span class="card-label">Blood Pressure (SYS)</span></div>
+                    <div class="card-value"><input type="number" id="val-sys" class="manual-input" disabled value="0"><span class="card-unit">mmHg</span></div>
+                </div>
+                <div class="card health-card">
+                    <div class="card-header"><span class="card-label">Blood Pressure (DIA)</span></div>
+                    <div class="card-value"><input type="number" id="val-dia" class="manual-input" disabled value="0"><span class="card-unit">mmHg</span></div>
+                </div>
+                <div class="card health-card">
+                    <div class="card-header"><span class="card-label">Heart Rate</span></div>
+                    <div class="card-value"><input type="number" id="val-bpm" class="manual-input" disabled value="0"><span class="card-unit">bpm</span></div>
+                </div>
+            </div>
+            
+            <button id="btn-save-manual" class="save-btn" style="margin-top: 1rem; display: none; width: 100%; justify-content: center;"><i class="fa-solid fa-cloud-arrow-up"></i> บันทึกข้อมูล (Mode 2)</button>
+            <!-- 📟 Serial Monitor ของ Arduino -->
+            <div class="card" style="margin-top: 1rem; background: #0f172a; color: #10b981; font-family: monospace;">
+                <h3 style="color: #fff; margin-bottom: 0.5rem; font-size: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+                    <i class="fa-solid fa-terminal"></i> Arduino Serial Monitor (Local)
+                </h3>
+                <div id="serial-monitor-screen" style="height: 150px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5; padding-right: 5px;">
+                    <span style="color: #64748b;">Waiting for Arduino data...</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- 🕰️ 2. History Section -->
+        <main id="history-section" style="display: none;">
+            <div class="history-container card">
+                <div class="history-header">
+                    <h2><i class="fa-solid fa-database"></i> ประวัติการบันทึกเข้า Database</h2>
+                    <button id="refresh-history" class="refresh-btn"><i class="fa-solid fa-rotate"></i></button>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <!-- แก้ไขหัวตาราง: เอา BPM ออก และเพิ่ม Height ต่อจาก Weight -->
+                        <thead><tr><th>วัน-เวลาที่บันทึก</th><th>Barcode ผู้ป่วย</th><th>ชื่อผู้ป่วย</th><th>Temp</th><th>Weight</th><th>Height</th><th>BP</th></tr></thead>
+                        <tbody id="history-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+<!-- 👥 3. Patients / Users Section -->
+<main id="patients-section" style="display: none;">
+    <div class="card">
+        <!-- ปรับแต่ง Header ให้โชว์ตัวกรอง -->
+        <div class="history-header" style="flex-wrap: wrap; gap: 1rem;">
+            <h2 id="user-management-title"><i class="fa-solid fa-users"></i> จัดการข้อมูลผู้ป่วย</h2>
+            
+            <div style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                
+                <!-- 🔴 เพิ่มตัวกรองบทบาท (ระบบจะซ่อนไว้ และโชว์เฉพาะตอน Admin ล็อกอิน) -->
+                <div class="input-field" id="role-filter-container" style="display: none;">
+                    <label>เลือกดูตามบทบาท</label>
+                    <select id="filter-role-select" style="padding: 0.8rem 1.2rem; border-radius: 8px; border: 1px solid var(--border); background: #f8fafc; outline: none; cursor: pointer;">
+                        <option value="ALL">ทั้งหมด (All)</option>
+                        <option value="OFFICER">เฉพาะเจ้าหน้าที่ (Officer)</option>
+                        <option value="PATIENT">เฉพาะผู้ป่วย (Patient)</option>
+                    </select>
+                </div>
+
+                <!-- ช่องค้นหาเดิม -->
+                <div class="input-field search-bar">
+                    <div>
+                        <label>ค้นหาบัญชี (เลข ปชช. / Username)</label>
+                        <input type="text" id="search-user-input" placeholder="พิมพ์คำค้นหา...">
+                    </div>
+                    <button id="btn-search-user" class="save-btn" style="padding: 0.8rem 1rem;">ค้นหา</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-wrapper" style="margin-top: 1rem;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>Username</th>
+                        <th>เลข ปชช.</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="user-table-body">
+                    <!-- รายชื่อจะแสดงที่นี่ -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<!-- 🛠️ Popup Modal สำหรับแก้ไขข้อมูล (เฉพาะชื่อ-นามสกุล) -->
+    <div id="edit-user-modal" class="modal" style="display: none;">
+        <div class="modal-content card">
+            <h2><i class="fa-solid fa-user-pen"></i> แก้ไขข้อมูล</h2>
+            <input type="hidden" id="edit-user-id">
+            <div class="grid" style="margin-top: 1rem;">
+                <div class="input-field"><label>ชื่อ</label><input type="text" id="edit-fname" required></div>
+                <div class="input-field"><label>นามสกุล</label><input type="text" id="edit-lname" required></div>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button id="btn-save-edit" class="save-btn" style="flex: 1; justify-content: center;"><i class="fa-solid fa-save"></i> บันทึกข้อมูล</button>
+                <button id="btn-cancel-edit" class="save-btn" style="flex: 1; justify-content: center; background: #64748b;"><i class="fa-solid fa-times"></i> ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+</main>
+    <!-- 📋 Patient Health Record (โปรไฟล์ผู้ป่วย & Dashboard สุขภาพ) -->
+        <main id="patient-detail-section" style="display: none;">
+            <div class="history-header">
+                <button class="refresh-btn" id="btn-back-members" style="display:none;"><i class="fa-solid fa-arrow-left"></i> กลับไปหน้าสมาชิก</button>
+                <h2><i class="fa-solid fa-clipboard-user"></i> Patient Health Dashboard</h2>
+            </div>
+            
+            <!-- ส่วนบน: กราฟ และ ตารางประวัติย่อ -->
+            <div class="grid detail-grid-top">
+                <!-- กราฟ Health Trends -->
+                <div class="card">
+                    <div class="history-header">
+                        <h3 style="color: #0f172a; font-size: 1.1rem;"><i class="fa-solid fa-chart-line"></i> แนวโน้มสุขภาพ (Trends)</h3>
+                        <select id="chart-filter" class="filter-select" style="padding: 0.4rem; border-radius: 6px; border: 1px solid #cbd5e1;">
+                            <option value="bp">ความดันโลหิต (BP)</option>
+                            <option value="bmi">ค่าดัชนีมวลกาย (BMI)</option>
+                            <option value="weight">น้ำหนัก (Weight)</option>
+                            <option value="height">ส่วนสูง (Height)</option>
+                            <option value="temp">อุณหภูมิ (Temp)</option>
+                        </select>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 280px; width: 100%;">
+                        <canvas id="patientChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- ตารางประวัติ Checkup -->
+                <div class="card">
+                    <div class="history-header">
+                        <h3 style="color: #0f172a; font-size: 1.1rem;"><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการตรวจ</h3>
+                    </div>
+                    <div class="mini-table-wrapper" style="max-height: 280px; overflow-y: auto;">
+                        <table class="mini-table" style="width:100%; text-align:left; font-size: 0.85rem;">
+                            <thead style="background:#f1f5f9; position: sticky; top: 0;">
+                                <tr><th style="padding:8px;">วันที่</th><th>BMI</th><th>BP</th><th>Temp</th></tr>
+                            </thead>
+                            <tbody id="patient-history-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ส่วนล่าง: โปรไฟล์, ผลตรวจล่าสุด, และสรุปคำแนะนำ -->
+            <div class="grid detail-grid-bottom">
+                
+                <!-- ข้อมูลคนไข้ + Barcode -->
+                <div class="card profile-card" style="text-align: center;">
+                    <div class="profile-avatar" style="width: 70px; height: 70px; background: #e0e7ff; color: #4f46e5; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; margin: 0 auto 1rem;"><i class="fa-solid fa-user"></i></div>
+                    <h3 id="detail-name">-</h3>
+                    <p class="text-muted" id="detail-id" style="margin-bottom: 1rem;">ID: -</p>
+                    
+                    <div style="margin: 1rem 0; text-align: center; background: #f8fafc; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px;">
+                        <canvas id="patient-personal-barcode"></canvas>
+                        <p style="font-size: 0.75rem; color: #64748b; margin-top: 5px;">บาร์โค้ดประจำตัว</p>
+                    </div>
+                    
+                    <hr style="margin: 1rem 0; border-top: 1px solid #e2e8f0;">
+                    <div class="profile-info-row" style="display:flex; justify-content:space-between; padding:0.3rem 0; font-size:0.9rem;"><span>อายุ:</span> <strong id="detail-age">-</strong></div>
+                    <div class="profile-info-row" style="display:flex; justify-content:space-between; padding:0.3rem 0; font-size:0.9rem;"><span>เพศ:</span> <strong id="detail-gender">-</strong></div>
+                    <div class="profile-info-row" style="display:flex; justify-content:space-between; padding:0.3rem 0; font-size:0.9rem;"><span>โรคประจำตัว:</span> <strong id="detail-disease">-</strong></div>
+                    <div class="profile-info-row" style="display:flex; justify-content:space-between; padding:0.3rem 0; font-size:0.9rem;"><span>ยาที่แพ้:</span> <strong id="detail-allergy">-</strong></div>
+                </div>
+                
+                <!-- กล่องผลตรวจล่าสุด 6 ช่อง -->
+                <div class="card">
+                    <div class="history-header" style="margin-bottom: 1rem;">
+                        <h3 style="color: #0f172a; font-size: 1.1rem;">ผลตรวจล่าสุด (Latest Results)</h3>
+                        <span class="badge" id="latest-status-badge" style="padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem;">-</span>
+                    </div>
+                    
+                    <div class="grid grid-3" id="latest-results-grid">
+                        <!-- โครงสร้างกล่องประมวลผล (จะถูกเติมด้วย JavaScript) -->
+                    </div>
+
+                    <!-- กล่องสรุปคำแนะนำ -->
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #f8fafc; border-radius: 8px; border-left: 4px solid #4f46e5;">
+                        <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-user-doctor"></i> สรุปและการประเมินเบื้องต้น:</h4>
+                        <ul id="health-summary-list" style="font-size: 0.85rem; color: #334155; padding-left: 1.2rem; line-height: 1.6;">
+                            <li>รอการประมวลผลข้อมูล...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- 🔌 4. IoT Station -->
+        <main id="station-section" style="display: none;">
+            <div class="history-header">
+                <h2><i class="fa-solid fa-server"></i> สถานะการทำงานของอุปกรณ์ (IoT Status)</h2>
+                <div class="status-badge"><div class="status-dot" style="background: #10b981;"></div><span>System Online</span></div>
+            </div>
+            <div class="grid">
+                <div class="card device-card">
+                    <div class="device-info"><h3>Main Unit (ESP32)</h3><span class="badge success">Online</span></div>
+                </div>
+                <div class="card device-card">
+                    <div class="device-info"><h3>OMRON BP Monitor</h3><span class="badge success">Connected</span></div>
+                </div>
+                <div class="card device-card">
+                    <div class="device-info"><h3>Mi Smart Scale 2</h3><span class="badge success">Connected</span></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 🛡️ 5. Admin Panel -->
+        <main id="admin-section" style="display: none;">
+            <div class="card">
+                <h2><i class="fa-solid fa-user-shield"></i> สร้างบัญชีเจ้าหน้าที่คัดกรอง</h2>
+                <form id="admin-create-officer" style="margin-top: 1rem;">
+                    <div class="grid grid-2">
+                        <div class="input-field"><input type="text" id="adm-off-fname" placeholder="ชื่อจริง" required></div>
+                        <div class="input-field"><input type="text" id="adm-off-lname" placeholder="นามสกุล" required></div>
+                        <div class="input-field"><input type="text" id="adm-off-user" placeholder="Username" required></div>
+                        <div class="input-field"><input type="password" id="adm-off-pass" placeholder="Password" required></div>
+                    </div>
+                    
+                    <!-- เพิ่มข้อความแจ้งเตือน Admin -->
+                    <p style="font-size: 0.85rem; color: var(--secondary); margin-top: 1rem;">
+                        <i class="fa-solid fa-circle-info"></i> ระบบจะสร้างรหัสประจำตัวเจ้าหน้าที่ให้อัตโนมัติ (เช่น OFC-12345)
+                    </p>
+                    
+                    <button type="submit" class="save-btn" style="margin-top: 1rem;">สร้างบัญชีเจ้าหน้าที่</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 🔴 แทรกบรรทัดนี้เพิ่มเข้าไป เพื่อให้ระบบวาดบาร์โค้ดได้ -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>

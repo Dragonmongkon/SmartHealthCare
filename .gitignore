@@ -1,0 +1,9 @@
+# Block Environment variables
+.env
+
+# Block Node modules
+node_modules/
+
+# Block Package files (ตามที่คุณระบุ)
+package.json
+package-lock.json
